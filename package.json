@@ -10,6 +10,10 @@
   "category": "Network",
   "license": null,
   "main": "./dist/electron/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:alexYurin/myvpn-test.git"
+  },
   "release": "build",
   "scripts": {
     "build": "cross-env BUILD_TARGET=web node --max_old_space_size=4096 .electron-vue/build.js",
