@@ -16,6 +16,7 @@
   },
   "release": "build",
   "scripts": {
+    "heroku-postbuild": "cross-env BUILD_TARGET=web node --max_old_space_size=4096 .electron-vue/build.js",
     "build": "cross-env BUILD_TARGET=web node --max_old_space_size=4096 .electron-vue/build.js",
     "dev": "node .electron-vue/dev-runner.js"
   },
