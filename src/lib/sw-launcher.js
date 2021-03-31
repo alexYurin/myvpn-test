@@ -25,7 +25,7 @@ function swLauncher(isBrowser, document) {
         navigator.serviceWorker.register('service-worker.js')
           .then(function(reg) {
             console.log('Service Worker Registered');
-
+            console.log('NEW LINE!')
             // Update service worker
             reg.update();
 
