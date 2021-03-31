@@ -66,6 +66,7 @@ function swLauncher(isBrowser, document) {
       //check if browser version supports the api
       if ('getInstalledRelatedApps' in window.navigator) {
         const relatedApps = await navigator.getInstalledRelatedApps();
+        console.log('relatedApps', relatedApps)
         relatedApps.forEach((app) => {
           //if your PWA exists in the array it is installed
           console.log('getInstalledRelatedApps', app.platform, app.url, app);
