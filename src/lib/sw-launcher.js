@@ -11,6 +11,8 @@ function swLauncher(isBrowser, document) {
       // Stash the event so it can be triggered later.
       deferredPrompt = e;
 
+      console.log('beforeinstallprompt', e)
+
       // Show dialog to the add app to home screen
       showInstallPromotion();
     });
@@ -25,7 +27,6 @@ function swLauncher(isBrowser, document) {
         navigator.serviceWorker.register('service-worker.js')
           .then(function(reg) {
             console.log('Service Worker Registered');
-            console.log('NEW LINE!')
             // Update service worker
             reg.update();
 
