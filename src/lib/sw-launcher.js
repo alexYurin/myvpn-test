@@ -62,6 +62,15 @@ function swLauncher(isBrowser, document) {
             console.error('Error during service worker registration:', e);
           });
       }
+
+      //check if browser version supports the api
+      if ('getInstalledRelatedApps' in window.navigator) {
+        const relatedApps = await navigator.getInstalledRelatedApps();
+        relatedApps.forEach((app) => {
+          //if your PWA exists in the array it is installed
+          console.log('getInstalledRelatedApps', app.platform, app.url, app);
+        });
+      }
     });
 
     function addToHomeScreen() {
