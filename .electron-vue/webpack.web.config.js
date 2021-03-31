@@ -133,7 +133,7 @@ let webConfig = {
   ],
   output: {
     filename: '[name].js',
-    path: path.join(__dirname, '../dist/web')
+    path: path.join(__dirname, '../dist')
   },
   resolve: {
     alias: {
@@ -159,16 +159,16 @@ if (process.env.NODE_ENV === 'production') {
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),
-        to: path.join(__dirname, '../dist/web/static'),
+        to: path.join(__dirname, '../dist/static'),
         ignore: ['.*']
       },
       {
         from: path.join(__dirname, '../manifest.json'),
-        to: path.join(__dirname, '../dist/web'),
+        to: path.join(__dirname, '../dist'),
       },
       {
         from: path.join(__dirname, '../service-worker.js'),
-        to: path.join(__dirname, '../dist/web'),
+        to: path.join(__dirname, '../dist'),
       },
     ]),
     new webpack.DefinePlugin({
