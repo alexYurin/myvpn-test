@@ -1,6 +1,6 @@
 <template>
   <div class="app-page">
-    <h3>{{ $t('Choose a hosting provider and connect your account') }}</h3>
+    <h3>Testing message</h3>
     <Providers />
     <h3 v-if="selectedProvider !== 'custom'">{{ $t('Select a server region')}}</h3>
     <FormRegions v-if="selectedProvider !== 'custom'" />
