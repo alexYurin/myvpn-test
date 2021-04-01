@@ -9,7 +9,7 @@ const STATIC_CACHE_NAME = 'static-data'
 const DYNAMIC_CACHE_NAME = 'dynamic-data'
 
 self.addEventListener('install', async event => {
-  // self.skipWaiting()
+  self.skipWaiting()
   const cache = await caches.open(STATIC_CACHE_NAME)
   console.log('install')
   cache.addAll(staticAssets)
