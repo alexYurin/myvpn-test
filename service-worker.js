@@ -1,58 +1,73 @@
-const staticAssets = [
-  // '/',
-  // '/index.html',
-  // '/web.js',
-  // '/manifest.json'
-]
+// the cache version gets updated every time there is a new deployment
+const CACHE_VERSION = 10;
+const CURRENT_CACHE = `main-${CACHE_VERSION}`;
 
-const STATIC_CACHE_NAME = 'static-data'
-const DYNAMIC_CACHE_NAME = 'dynamic-data'
+// these are the routes we are going to cache for offline support
+const cacheFiles = [
+  '/',
+  '/index.html',
+  '/web.js',
+  '/manifest.json'
+];
 
-self.addEventListener('install', async event => {
-  self.skipWaiting()
-  const cache = await caches.open(STATIC_CACHE_NAME)
-  console.log('install')
-  cache.addAll(staticAssets)
-})
-
-self.addEventListener('activate', e => {
-  console.log('activate')
-  e.waitUntil(
-    caches.keys().then(function (cacheNames) {
+// on activation we clean up the previously registered service workers
+self.addEventListener('activate', evt =>
+  evt.waitUntil(
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.filter(function (cacheName) {
-          // Return true if you want to remove this cache,
-          // but remember that caches are shared across
-          // the whole origin
-        }).map(function (cacheName) {
-          return caches.delete(cacheName)
+        cacheNames.map(cacheName => {
+          if (cacheName !== CURRENT_CACHE) {
+            return caches.delete(cacheName);
+          }
         })
-      )
+      );
     })
   )
-  return self.clients.claim()
-})
+);
 
-self.addEventListener('fetch', event => {
-  const { request } = event
-  event.respondWith(cacheData(request))
-})
+// on install we download the routes we want to cache for offline
+self.addEventListener('install', evt =>
+  evt.waitUntil(
+    caches.open(CURRENT_CACHE).then(cache => {
+      return cache.addAll(cacheFiles);
+    })
+  )
+);
 
-async function cacheData (request) {
-  const cashedRequest = await caches.match(request)
-  if (staticAssets.some(sa => request.url.indexOf(sa) >= 0) || request.headers.get('accept').includes('text/html')) {
-    return cashedRequest || networkFirst(request)
-  }
-  return cashedRequest || networkFirst(request)
-}
+// fetch the resource from the network
+const fromNetwork = (request, timeout) =>
+  new Promise((fulfill, reject) => {
+    const timeoutId = setTimeout(reject, timeout);
+    fetch(request).then(response => {
+      clearTimeout(timeoutId);
+      fulfill(response);
+      update(request);
+    }, reject);
+  });
 
-async function networkFirst (request) {
-  const cache = await caches.open(DYNAMIC_CACHE_NAME);
-  try {
-    const response = await fetch(request)
-    cache.put(request, response.clone())
-    return response
-  } catch (error) {
-    return await cache.match(request)
-  }
-}
+// fetch the resource from the browser cache
+const fromCache = request =>
+  caches
+    .open(CURRENT_CACHE)
+    .then(cache =>
+      cache
+        .match(request)
+        .then(matching => matching || cache.match('/offline/'))
+    );
+
+// cache the current page to make it available for offline
+const update = request =>
+  caches
+    .open(CURRENT_CACHE)
+    .then(cache =>
+      fetch(request).then(response => cache.put(request, response))
+    );
+
+// general strategy when making a request (eg if online try to fetch it
+// from the network with a timeout, if something fails serve from cache)
+self.addEventListener('fetch', evt => {
+  evt.respondWith(
+    fromNetwork(evt.request, 10000).catch(() => fromCache(evt.request))
+  );
+  evt.waitUntil(update(evt.request));
+});
