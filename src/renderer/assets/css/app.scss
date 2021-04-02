@@ -3,25 +3,27 @@
 @import "mixins.scss";
 
 .root-app {
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position-x: 50px;
-    background-position-y: -100px;
     font-family: 'Roboto Mono';
     word-spacing: -2px;
-    @include mqMAX($XS) {
-        background-size: cover;
-        background-position-x: 30%;
-        background-position-y: -50px;
-    }
+    background: linear-gradient(5.41deg,#191919,#313131) no-repeat;
+    background-attachment: fixed;
 }
 .app-page {
     -webkit-user-select: none;
     padding: 20px;
     padding-top: 40px;
+    background-image: url('/static/img/background.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position-x: 50px;
+    background-position-y: -100px;
     @include mqMAX($XS) {
         padding-left: 10px;
         padding-right: 10px;
+        min-height: calc(100vh - 64px);
+        background-size: cover;
+        background-position-x: 30%;
+        background-position-y: -50px;
     }
 }
 .el-aside {

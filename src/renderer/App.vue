@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="root-app" v-bind:style="{ 'background-image': 'url(' + staticPath + '/img/background.svg' + ')' }">
+  <div id="app" class="root-app">
     <Header />
     <Offline>
       <div slot="offline">
@@ -11,14 +11,20 @@
       :icon="'static/img/logo-small.png'"
       :text="$t('Add to home screen this app?')"
     />
+    <PWAInstruction
+      :manual="manual"
+    />
   </div>
 </template>
 
 <script>
   import Offline from 'v-offline'
-  import Header from "./components/Header"
+  import Header from './components/Header'
   import PWAPopup from './components/PWAPopup'
+  import PWAInstruction from './components/PWAInstruction'
   import swLauncher from '../../src/lib/sw-launcher'
+  import manuals from '../lib/manuals'
+  import { getBrowserName } from '../lib/utils'
 
   const isBrowser = process.browser
   let electron = null
@@ -30,12 +36,17 @@
 
   swLauncher(isBrowser, document)
 
+  const checkBrowsers = [
+    'Safari', 'Firefox', 'Opera'
+  ]
+
   export default {
     name: 'vpn',
-    components: { Offline, Header, PWAPopup },
+    components: { Offline, Header, PWAPopup, PWAInstruction },
     data () {
       return {
         staticPath: process.browser || process.env.NODE_ENV === 'development' ? 'static' :  __static,
+        manual: manuals[getBrowserName()] || manuals['Other']
       }
     },
     created: function () {

@@ -13,13 +13,6 @@
       "sizes": "512x512"
     }
   ],
-  "prefer_related_applications": true,
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://myvpn.run"
-    }
-  ],
   "start_url": "/",
   "background_color": "#343434",
   "display": "fullscreen",

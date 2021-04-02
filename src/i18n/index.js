@@ -132,5 +132,10 @@ export default {
     'Save QR Code': 'Сохранить QR код',
     'Version': 'Версия',
     'Add to home screen this app?': 'Добавить приложение на домашний экран?',
+    'Install the MyVPN app directly from your browser': 'Установите приложение MyVPN прямо из вашего браузера',
+    'Do not show again': 'Больше не показывать',
+    'Step': 'Шаг',
+    'Next Step': 'Вперед',
+    'Prev Step': 'Назад',
   }
 }

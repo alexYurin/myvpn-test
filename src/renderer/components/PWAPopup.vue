@@ -62,7 +62,8 @@
     },
     methods: {
       close () {
-        document.querySelector('.pwa-popup--visible').classList.remove('pwa-popup--visible')
+        document.querySelector('.pwa-popup--visible')
+          .classList.remove('pwa-popup--visible')
       },
     }
   }

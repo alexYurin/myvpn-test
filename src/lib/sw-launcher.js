@@ -1,21 +1,34 @@
-import { isMobile } from '../lib/utils';
+import { isMobile, localStorageService } from '../lib/utils';
+
+  console.log()
 
 function swLauncher(isBrowser, document) {
   const isMobileOS = isMobile.iOS() || isMobile.Android();
   if (isBrowser && isMobileOS) {
     let deferredPrompt = null;
 
-    window.addEventListener('beforeinstallprompt', function (e) {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e;
+    // Check event in Browser
+    if (window['BeforeInstallPromptEvent']) {
+      window.addEventListener('beforeinstallprompt', function (e) {
+        // Prevent Chrome 67 and earlier from automatically showing the prompt
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
 
-      console.log('beforeinstallprompt', e)
-
-      // Show dialog to the add app to home screen
-      showInstallPromotion();
-    });
+        // Show dialog to the add app to home screen
+        showInstallPromotion();
+      });
+    } else {
+      window.addEventListener('load', function (e) {
+        const isNeedShowInstructions = !JSON.parse(
+          localStorageService.get('my_vpn_never_show_instructions')
+        )
+        if (isNeedShowInstructions) {
+          // Show instruction
+          showInstallInstruction();
+        }
+      });
+    }
 
     // Detect to install app
     window.addEventListener('appinstalled', (evt) => {
@@ -27,6 +40,7 @@ function swLauncher(isBrowser, document) {
         navigator.serviceWorker.register('service-worker.js')
           .then(function(reg) {
             console.log('Service Worker Registered');
+
             // Update service worker
             reg.update();
 
@@ -62,16 +76,6 @@ function swLauncher(isBrowser, document) {
             console.error('Error during service worker registration:', e);
           });
       }
-
-      //check if browser version supports the api
-      if ('getInstalledRelatedApps' in window.navigator) {
-        const relatedApps = await navigator.getInstalledRelatedApps();
-        console.log('relatedApps', relatedApps)
-        relatedApps.forEach((app) => {
-          //if your PWA exists in the array it is installed
-          console.log('getInstalledRelatedApps', app.platform, app.url, app);
-        });
-      }
     });
 
     function addToHomeScreen() {
@@ -92,6 +96,13 @@ function swLauncher(isBrowser, document) {
         document.getElementById('pwa_ok').addEventListener('click', addToHomeScreen);
       }
     };
+
+    function showInstallInstruction() {
+      const pwaInstruction = document.querySelector('.pwa-instruction');
+      if (pwaInstruction) {
+        pwaInstruction.classList.add('pwa-instruction--visible');
+      }
+    }
   }
 }
 
