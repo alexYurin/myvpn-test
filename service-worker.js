@@ -46,15 +46,15 @@ const fromNetwork = (request, timeout) =>
   });
 
 // fetch the resource from the browser cache
-const fromCache = request => (
-  // caches
+const fromCache = request => {
+  // return caches
   //   .open(CURRENT_CACHE)
   //   .then(cache =>
   //     cache
   //       .match(request)
   //       .then(matching => matching || cache.match('/offline/'))
   //   )
-);
+};
 
 // cache the current page to make it available for offline
 const update = request =>
