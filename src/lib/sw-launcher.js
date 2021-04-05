@@ -32,7 +32,7 @@ function swLauncher(isBrowser, document) {
 
     // Detect to install app
     window.addEventListener('appinstalled', (evt) => {
-      localStorageService.get('my_vpn_never_show_instructions', true)
+      localStorageService.set('my_vpn_never_show_instructions', true)
     });
 
     window.addEventListener('load', async e => {
