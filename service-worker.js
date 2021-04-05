@@ -26,12 +26,13 @@ self.addEventListener('activate', evt =>
 );
 
 // on install we download the routes we want to cache for offline
-self.addEventListener('install', evt =>
-  evt.waitUntil(
-    caches.open(CURRENT_CACHE).then(cache => {
-      return cache.addAll(cacheFiles);
-    })
-  )
+self.addEventListener('install', evt => {
+  // evt.waitUntil(
+  //   caches.open(CURRENT_CACHE).then(cache => {
+  //     return cache.addAll(cacheFiles);
+  //   })
+  // )
+  }
 );
 
 // fetch the resource from the network
