@@ -46,14 +46,15 @@ const fromNetwork = (request, timeout) =>
   });
 
 // fetch the resource from the browser cache
-const fromCache = request =>
-  caches
-    .open(CURRENT_CACHE)
-    .then(cache =>
-      cache
-        .match(request)
-        .then(matching => matching || cache.match('/offline/'))
-    );
+const fromCache = request => (
+  // caches
+  //   .open(CURRENT_CACHE)
+  //   .then(cache =>
+  //     cache
+  //       .match(request)
+  //       .then(matching => matching || cache.match('/offline/'))
+  //   )
+);
 
 // cache the current page to make it available for offline
 const update = request =>
@@ -69,5 +70,5 @@ self.addEventListener('fetch', evt => {
   evt.respondWith(
     fromNetwork(evt.request, 10000).catch(() => fromCache(evt.request))
   );
-  evt.waitUntil(update(evt.request));
+  // evt.waitUntil(update(evt.request));
 });
