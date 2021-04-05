@@ -67,10 +67,13 @@
       left: 15px;
       right: 15px;
       min-height: 70vh;
+      max-height: 90vh;
       padding: 1.4rem 1.4rem 1.6rem;
       background: linear-gradient(5.41deg,#191919,#313131);
       transform: translateY(-50%);
       border-radius: 2px;
+      overflow-x: hidden;
+      overflow-y: auto;
       z-index: 2;
     }
     &-header {
