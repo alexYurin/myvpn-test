@@ -9,18 +9,20 @@ function swLauncher(isBrowser, document) {
 
     // Check event in Browser
     if (window['BeforeInstallPromptEvent']) {
-      console.log('BeforeInstallPromptEvent', window['BeforeInstallPromptEvent'])
+      console.log('BeforeInstallPromptEvent if', window['BeforeInstallPromptEvent'])
       window.addEventListener('beforeinstallprompt', function (e) {
         // Prevent Chrome 67 and earlier from automatically showing the prompt
         e.preventDefault();
         // Stash the event so it can be triggered later.
         deferredPrompt = e;
 
+        console.log('deferredPrompt', deferredPrompt)
+
         // Show dialog to the add app to home screen
         showInstallPromotion();
       });
     } else {
-      console.log('BeforeInstallPromptEvent', window['BeforeInstallPromptEvent'])
+      console.log('BeforeInstallPromptEvent else', window['BeforeInstallPromptEvent'])
       window.addEventListener('load', function (e) {
         const isNeedShowInstructions = !JSON.parse(
           localStorageService.get('my_vpn_never_show_instructions')
