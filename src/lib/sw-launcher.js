@@ -1,7 +1,5 @@
 import { isMobile, localStorageService } from '../lib/utils';
 
-  console.log()
-
 function swLauncher(isBrowser, document) {
   const isMobileOS = isMobile.iOS() || isMobile.Android();
   if (isBrowser && isMobileOS) {
@@ -32,7 +30,7 @@ function swLauncher(isBrowser, document) {
 
     // Detect to install app
     window.addEventListener('appinstalled', (evt) => {
-
+      localStorageService.set('my_vpn_never_show_instructions', true)
     });
 
     window.addEventListener('load', async e => {
@@ -63,7 +61,6 @@ function swLauncher(isBrowser, document) {
                       // At this point, everything has been precached.
                       // It's the perfect time to display a "Content is cached for offline use." message.
                       console.log('Content is now available offline!');
-                      localStorageService.set('my_vpn_never_show_instructions', true)
                     }
                     break;
 
