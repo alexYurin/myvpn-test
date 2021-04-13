@@ -123,3 +123,8 @@
   outline: none;
   box-shadow: none;
 }
+
+.el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
