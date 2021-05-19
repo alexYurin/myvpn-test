@@ -49,14 +49,6 @@
         manual: manuals[getBrowserName()] || manuals['Other']
       }
     },
-    mounted() {
-      window.onpopstate = event => {
-        console.log('event', event)
-        if () {
-          // this.$router.push("/"); // redirect to home, for example
-        }
-      };
-    },
     created: function () {
       const menuElements = [
         { label: this.$root.$t('Copy'), role: 'copy' },

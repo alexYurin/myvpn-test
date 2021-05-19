@@ -13,7 +13,7 @@
         <div class="btn-group" v-else>
             <el-button class="btn-group-item btn-group-item--left" type="primary" v-if="token" icon="el-icon-receiving" v-on:click="goToDroplets">{{ $t('Servers') }}</el-button>
             <el-button class="btn-group-item btn-group-item--right" type="info" v-if="token" icon="el-icon-connection" v-on:click="logout">{{ $t('Logout') }}</el-button>
-            <el-button class="btn-group-item btn-group-item--fill" type="success" :name="providerName" v-else icon="el-icon-connection" v-on:click="login">{{ $t(`Log in to the ${providerName} account`) }}</el-button>
+            <el-link class="btn-group-item btn-group-item--fill" type="success" :name="providerName" v-else icon="el-icon-connection" v-on:click.prevent="login">{{ $t(`Log in to the ${providerName} account`) }}</el-link>
         </div>
         <p>
             <el-alert v-if="configuredError !== '' && token !== ''" :title="$t(configuredError)" type="error" show-icon :closable=false />
@@ -85,6 +85,7 @@
     localStorageService.set('my_vpn_provider_key', value)
   const removeProviderKey = () =>
     localStorageService.remove('my_vpn_provider_key')
+
   export default {
     props: ['providerKey', 'providerName', 'providerWebsite', 'faqLink', 'oauthConfig', 'oauthWindowWidth', 'oauthWindowHeight', 'viaKey'],
     data () {
@@ -160,7 +161,7 @@
             this.setToken((new URLSearchParams(resp)).get('access_token'))
             window.close()
           }, err => {
-            this.$message({message: this.$root.$t('Please try again'), type: 'error'})
+            this.$message({message: this.$root.$t('Please try again'), type: 'error', showClose: true})
             window.close()
           })
       }
@@ -168,7 +169,7 @@
     watch: {
       configuredSuccess: function (val) {
         if (val) {
-          this.$message({message: this.$root.$t('Successful connection to the account'), type: 'success'})
+          this.$message({message: this.$root.$t('Successful connection to the account'), type: 'success', showClose: true})
         }
       },
     }

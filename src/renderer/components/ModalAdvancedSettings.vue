@@ -1,82 +1,81 @@
 <template>
-    <div>
-        <el-dialog
-                :title="$t('Advanced Settings')"
-                :visible.sync="modalOpen"
-                :show-close="false"
-                :close-on-press-escape="false"
-                :close-on-click-modal="false">
+  <div>
+    <el-dialog
+      :title="$t('Advanced Settings')"
+      :visible.sync="modalOpen"
+      :show-close="false"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false">
 
-            <el-form v-if="protocol === 'wireguard'" ref="form">
-                <h3>{{ protocol }}</h3>
-                <el-form-item :label="this.$root.$t('Accounts')">
-                  <el-input-number v-model="numberOfAccounts" :min="1" :max="5"></el-input-number>
-                </el-form-item>
-            </el-form>
+        <el-form v-if="protocol === 'wireguard'" ref="form">
+            <h3>{{ protocol }}</h3>
+            <el-form-item :label="this.$root.$t('Accounts')">
+              <el-input-number v-model="numberOfAccounts" :min="1" :max="5"></el-input-number>
+            </el-form-item>
+        </el-form>
 
-            <el-form v-if="protocol === 'socks5'" ref="form">
-              <h3>{{ protocol }}</h3>
-              <el-form-item :label="this.$root.$t('Port')">
-                <el-input-number v-model="customPort" :min="1" :max="65535"></el-input-number>
-              </el-form-item>
-            </el-form>
+        <el-form v-if="protocol === 'socks5'" ref="form">
+          <h3>{{ protocol }}</h3>
+          <el-form-item :label="this.$root.$t('Port')">
+            <el-input-number v-model="customPort" :min="1" :max="65535"></el-input-number>
+          </el-form-item>
+        </el-form>
 
-            <el-form v-if="protocol === 'shadowsocks'" ref="form">
-                <h3>{{ protocol }}</h3>
-                <el-form-item :label="this.$root.$t('Accounts')">
-                  <el-input-number v-model="numberOfAccounts" :min="1" :max="5"></el-input-number>
-                </el-form-item>
-                <el-form-item label="">
-                  <el-checkbox v-model="shadowsocksV2RayPlugin">{{$t('Enable V2Ray plugin')}}</el-checkbox>
-                </el-form-item>
-            </el-form>
+        <el-form v-if="protocol === 'shadowsocks'" ref="form">
+            <h3>{{ protocol }}</h3>
+            <el-form-item :label="this.$root.$t('Accounts')">
+              <el-input-number v-model="numberOfAccounts" :min="1" :max="5"></el-input-number>
+            </el-form-item>
+            <el-form-item label="">
+              <el-checkbox v-model="shadowsocksV2RayPlugin">{{$t('Enable V2Ray plugin')}}</el-checkbox>
+            </el-form-item>
+        </el-form>
 
-            <h3>DNS</h3>
-            <el-form ref="form">
-                <el-form-item label="dns-list">
-                    <span slot="label"></span>
-                    <el-select v-model="selectedDNS" :placeholder="$t('OpenDNS')" @change="handleChooseDNS">
-                        <el-option
-                                v-for="(dns, index) in dnsList"
-                                :key="index"
-                                :label="dns.title"
-                                :value="index"
-                        >
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+        <h3>DNS</h3>
+        <el-form ref="form">
+            <el-form-item label="dns-list">
+                <span slot="label"></span>
+                <el-select v-model="selectedDNS" :placeholder="$t('OpenDNS')" @change="handleChooseDNS">
+                    <el-option
+                      v-for="(dns, index) in dnsList"
+                      :key="index"
+                      :label="dns.title"
+                      :value="index"
+                    >
+                    </el-option>
+                </el-select>
+            </el-form-item>
 
-                <el-form-item label="dns-first">
-                    <span slot="label">Primary DNS</span>
-                    <el-input v-model="dnsFirst" @change="changeDNS"></el-input>
-                </el-form-item>
-                <el-form-item label="dns-second">
-                    <span slot="label">Secondary DNS</span>
-                    <el-input v-model="dnsSecond" @change="changeDNS"></el-input>
-                </el-form-item>
+            <el-form-item label="dns-first">
+                <span slot="label">Primary DNS</span>
+                <el-input v-model="dnsFirst" @change="changeDNS"></el-input>
+            </el-form-item>
+            <el-form-item label="dns-second">
+                <span slot="label">Secondary DNS</span>
+                <el-input v-model="dnsSecond" @change="changeDNS"></el-input>
+            </el-form-item>
 
-                <el-alert
-                        v-show="invalidDNS"
-                        class="notify"
-                        :title="$t('Invalid IP address specified')"
-                        :closable="false"
-                        type="error">
-                </el-alert>
+            <el-alert
+              v-show="invalidDNS"
+              class="notify"
+              :title="$t('Invalid IP address specified')"
+              :closable="false"
+              type="error">
+            </el-alert>
 
-                <div class="link">
-                    <el-link v-on:click.prevent="handleLinkTo('https://myvpn.run/faq/setup/dns')"><i class="el-icon-link el-icon--right"></i> {{ $t('We recommend that you additionally set the DNS in your system.')}}</el-link>
-                </div>
+            <div class="link">
+                <el-link v-on:click.prevent="handleLinkTo('https://myvpn.run/faq/setup/dns')"><i class="el-icon-link el-icon--right"></i> {{ $t('We recommend that you additionally set the DNS in your system.')}}</el-link>
+            </div>
 
-                <el-form-item class="btn-group">
-                    <el-button class="btn-group-item btn-group-item--fill" type="primary" @click="handleApply">{{ $t('Apply') }}</el-button>
-                    <el-button class="btn-group-item btn-group-item--fill" @click="handleCancel">{{ $t('Cancel') }}</el-button>
-                </el-form-item>
+            <el-form-item class="btn-group">
+                <el-button class="btn-group-item btn-group-item--fill" type="primary" @click="handleApply">{{ $t('Apply') }}</el-button>
+                <el-button class="btn-group-item btn-group-item--fill" @click="handleCancel">{{ $t('Cancel') }}</el-button>
+            </el-form-item>
 
-            </el-form>
-        </el-dialog>
-
-        <a href="#" class="link-padding" @click="modalOpen = true"><i class="el-icon-setting"></i> {{ $t('Advanced Settings') }} ({{ settingsAvailable }})</a>
-    </div>
+        </el-form>
+    </el-dialog>
+    <a href="#" class="link-padding" @click="modalOpen = true"><i class="el-icon-setting"></i> {{ $t('Advanced Settings') }} ({{ settingsAvailable }})</a>
+  </div>
 </template>
 
 <style lang="scss" scoped>

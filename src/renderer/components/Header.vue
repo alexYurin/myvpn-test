@@ -1,7 +1,7 @@
 <template>
     <div class="app__head">
         <div class="app__window-icon">
-            <img class="app__window-icon-logo" :src="staticPath + '/img/logo-small.png'"/>
+            <img class="app__window-icon-logo" :src="staticPath + '/img/logo-small.png'" alt="logo"/>
         </div>
         <div class="app__window-right">
             <div class="app__window-lang">
@@ -13,17 +13,17 @@
             <div v-if="!isBrowser" class="app__window-control">
                 <div class="app__window-control-icon">
                     <a href="#" v-on:click.prevent="windowMinimize">
-                        <img :src="staticPath + '/img/window/minimize.svg'"/>
+                        <img :src="staticPath + '/img/window/minimize.svg'" alt="min"/>
                     </a>
                 </div>
                 <div class="app__window-control-icon">
                     <a href="#" v-on:click.prevent="windowMaximize">
-                        <img :src="staticPath + '/img/window/maximize.svg'"/>
+                        <img :src="staticPath + '/img/window/maximize.svg'" alt="max"/>
                     </a>
                 </div>
                 <div class="app__window-control-icon">
                     <a href="#" v-on:click.prevent="windowClose">
-                        <img :src="staticPath + '/img/window/close.svg'"/>
+                        <img :src="staticPath + '/img/window/close.svg'" alt="close"/>
                     </a>
                 </div>
             </div>
@@ -82,6 +82,9 @@
             width: 100%;
             height: 24px;
             background: #4d4d4d;
+            .el-popup-parent--hidden & {
+                z-index: 1;
+            }
         }
 
         &__window-lang {

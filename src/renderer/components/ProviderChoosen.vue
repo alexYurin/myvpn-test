@@ -3,7 +3,7 @@
     <el-tabs v-if="mq.type !== 'xs'" v-model="activeTab" :value="selectedProvider" @tab-click="handleChangeProvider" class="providers" type="border-card">
       <el-tab-pane v-for="provider in providers" :key="provider.name" type="card" :name="provider.name" :disabled="apikey.length > 0 && activeProvider() !== provider.name">
         <span slot="label">
-          <img class="provider-choose-logo" :src="staticPath + provider.logo" v-if="provider.logo" />
+          <img class="provider-choose-logo" :src="staticPath + provider.logo" v-if="provider.logo" alt="provider-logo" />
           <span class="provider-choose-title" v-if="provider.name === 'custom'">{{ $t(provider.title) }}</span>
         </span>
         <div v-if="activeProvider() === provider.name" class="provider-choose-content">
@@ -15,7 +15,7 @@
       <el-select v-model="activeTab" placeholder="Choose a provider" :disabled="apikey.length > 0">
           <el-option v-for="provider in providers" :key="provider.name" :label="provider.title" :value="provider.name">
             <div class="provider-choose-option">
-              <img class="provider-choose-logo" :src="staticPath + provider.logo" v-if="provider.logo" />
+              <img class="provider-choose-logo" :src="staticPath + provider.logo" v-if="provider.logo" alt="provider-logo" />
               <span class="provider-choose-title" v-if="provider.name === 'custom'">{{ $t(provider.title) }}</span>
             </div>
           </el-option>

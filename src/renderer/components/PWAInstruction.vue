@@ -14,7 +14,7 @@
         @change="carouselChange"
       >
         <el-carousel-item v-for="step in manual.steps" :key="step">
-          <img class="pwa-instruction-image" :src="step">
+          <img class="pwa-instruction-image" :src="step" alt="image-step">
         </el-carousel-item>
       </el-carousel>
       <div v-if="manual.steps.length > 1" class="pwa-instruction-step-controls btn-group">
